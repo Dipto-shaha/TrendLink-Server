@@ -27,6 +27,8 @@ async function run() {
     await client.connect();
     // Send a ping to confirm a successful connection
     const Collection = client.db("trendLink").collection("product");
+    const CollectionCartProduct = client.db("trendLink").collection("cart");
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -41,9 +43,30 @@ async function run() {
       return res.send(result);
 
     })
+
+    app.get('/saveCartProduct/:userId',async(req,res)=>{
+      const userId= req.params.userId;
+      console.log("I am here",userId);
+      const result = await CollectionCartProduct.find({ user_id: userId }).toArray();
+      return res.send(result);
+
+    })
     app.post("/addproduct", async (req, res) => {
       const product = req.body;
       const result = await Collection.insertOne(product);
+      res.send(result);
+    });
+    app.post("/saveCartProduct",async(req,res)=>{
+      const cartProduct = req.body;
+      console.log(cartProduct);
+      const result = await CollectionCartProduct.insertOne(cartProduct);
+      res.send(result);
+    })
+
+    app.delete("/cartDelete/:_id", async (req, res) => {
+      const id = req.params._id;
+      console.log(id);
+      const result = await CollectionCartProduct.deleteOne({productId: id });
       res.send(result);
     });
     
