@@ -43,7 +43,7 @@ async function run() {
       res.send(result);
     });
 
-    // Selected Single Produt
+    // Selected Single Product
     app.get('/productDetails/:_id',async(req,res)=>{
       const id = req.params._id;
       console.log("Single Product request " ,id);
@@ -51,7 +51,7 @@ async function run() {
       return res.send(result);
 
     })
-    // Cart Produt
+    // Cart Product
     app.get('/saveCartProduct/:userId',async(req,res)=>{
       const userId= req.params.userId;
       console.log("Cart Prouct get by mail address ",userId);
@@ -93,6 +93,9 @@ async function run() {
       const result = await CollectionCartProduct.deleteOne({productId: id });
       res.send(result);
     });
+    app.get("/check",(req,res)=>{
+      res.send("Database Problem");
+    })
     
   
   } finally {
